@@ -1,0 +1,78 @@
+type Vehiculo {
+    id: ID!
+    placa: String!
+    marca: String!
+    modelo: String!
+    anio: Int!
+    tipo: TipoVehiculo!
+    estado: String!
+}
+
+type TipoVehiculo {
+    id: ID!
+    descripcion: String!
+    capacidad: String!
+    transmision: String!
+}
+
+type Mantenimiento {
+    id: ID!
+    vehiculo: Vehiculo!
+    fechaInicio: String!
+    fechaFin: String!
+    descripcion: String!
+    costo: Float!
+}
+
+type Seguro {
+    id: ID!
+    vehiculo: Vehiculo!
+    compania: String!
+    tipoCobertura: String!
+    fechaInicio: String!
+    fechaFin: String!
+}
+
+type Combustible {
+    id: ID!
+    vehiculo: Vehiculo!
+    tipo: String!
+    consumoLitros100km: Float!
+}
+
+type Query {
+    vehiculo(id: ID!): Vehiculo
+    vehiculos: [Vehiculo!]!
+    tipoVehiculo(id: ID!): TipoVehiculo
+    tiposVehiculo: [TipoVehiculo!]!
+    mantenimientosPorVehiculo(vehiculoId: ID!): [Mantenimiento!]!
+    segurosPorVehiculo(vehiculoId: ID!): [Seguro!]!
+    combustiblesPorVehiculo(vehiculoId: ID!): [Combustible!]!
+}
+
+input VehiculoInput {
+    placa: String!
+    marca: String!
+    modelo: String!
+    anio: Int!
+    tipoId: ID!
+    estado: String!
+}
+
+input TipoVehiculoInput {
+    descripcion: String!
+    capacidad: String!
+    transmision: String!
+}
+
+type Mutation {
+    crearVehiculo(input: VehiculoInput!): Vehiculo!
+    actualizarVehiculo(id: ID!, input: VehiculoInput!): Vehiculo!
+    eliminarVehiculo(id: ID!): Boolean!
+    
+    crearTipoVehiculo(input: TipoVehiculoInput!): TipoVehiculo!
+    actualizarTipoVehiculo(id: ID!, input: TipoVehiculoInput!): TipoVehiculo!
+    eliminarTipoVehiculo(id: ID!): Boolean!
+    
+    crearMantenimiento(vehiculoId: ID!, fechaInicio: String!, fechaFin: String!, descripcion: String!, costo: Float!): Mantenimiento!
+}
