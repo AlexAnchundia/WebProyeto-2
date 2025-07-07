@@ -1,25 +1,28 @@
-import express, { Application } from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
 
 async function startServer() {
-  const app: Application = express(); // 👈 aquí está la corrección
-    app.use(cors());
+  const app = express();
 
-    const server = new ApolloServer({
+  const server = new ApolloServer({
     typeDefs,
-    resolvers
-    });
+    resolvers,
+  });
 
-    await server.start();
-    server.applyMiddleware({ app });
+  await server.start();
 
-    const PORT = 4000;
-    app.listen(PORT, () => {
-    console.log(`🚀 API Gateway listo en http://localhost:${PORT}/graphql`);
-    });
+  app.use('/graphql', cors<cors.CorsRequest>(), express.json(), expressMiddleware(server));
+  
+  app.get('/', (_req, res) => res.send('Gateway funcionando 💘'));
+
+  const PORT = 4000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}/graphql`);
+  });
 }
 
 startServer();
