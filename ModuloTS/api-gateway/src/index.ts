@@ -5,6 +5,7 @@ import cors from 'cors';
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
 
+
 async function startServer() {
   const app = express();
 

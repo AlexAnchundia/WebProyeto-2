@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -20,9 +20,11 @@ app.use('/logs', logRoutes);
 app.use('/reportes', reporteRoutes);
 app.use('/soportes', soporteRoutes);
 
-app.get('/', (_req, res) => res.send('Microservicio de Análisis y Seguimiento funcionando'));
+app.get('/', (_req: Request, res: Response) => {
+  res.send('Microservicio de Análisis y Seguimiento funcionando');
+});
 
 const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });

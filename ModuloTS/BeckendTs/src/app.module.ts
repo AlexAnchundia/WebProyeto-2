@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EncuestaSatisfaccionModule } from './models/encuesta-satisfaccion/encuesta-satisfaccion.module';
@@ -10,17 +11,14 @@ import { SoporteClienteModule } from './models/soporte-cliente/soporte-cliente.m
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'aws-0-us-east-2.pooler.supabase.com',
-      port: 5432,
-      username: 'postgres.rzsevfnnpelnfwdeyfgs',
-      password: '4k3yMNj4OtciSHRE',
-      database: 'postgres', // ← este es el nombre correcto
+      url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
-      ssl: {
-        rejectUnauthorized: false, // ← esto activa la conexión SSL
+      extra: {
+        ssl: false, // desactiva SSL explícitamente
       },
     }),
     EncuestaSatisfaccionModule,
